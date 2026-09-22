@@ -81,4 +81,12 @@ public class Graph {
             System.out.println(sb);
         }
     }
+    /** Resets all vertices to UNVISITED with no parent, before a fresh DFS run. */
+    public void resetTraversalState() {
+        for (Vertex v : vertices) {
+            v.setVisitState(VisitState.UNVISITED);
+            v.setParent(null);
+        }
+    }
+
 }
