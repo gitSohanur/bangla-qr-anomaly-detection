@@ -152,4 +152,31 @@ public class CustomLinkedList<T> implements Iterable<T> {
         }
         return sb.append("]").toString();
     }
+    /**
+     * Inserts a value at the given index, shifting later elements back.
+     * index 0 behaves like addFirst; index size behaves like addLast.
+     * @throws IndexOutOfBoundsException if index is negative or greater than size
+     */
+    public void insertAt(int index, T value) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+        if (index == 0) {
+            addFirst(value);
+            return;
+        }
+        if (index == size) {
+            addLast(value);
+            return;
+        }
+        Node<T> prev = head;
+        for (int i = 0; i < index - 1; i++) {
+            prev = prev.next;
+        }
+        Node<T> newNode = new Node<>(value);
+        newNode.next = prev.next;
+        prev.next = newNode;
+        size++;
+    }
 }
+

@@ -149,4 +149,42 @@ class CustomLinkedListTest {
         }
         assertEquals(3, sum);
     }
+    @Test
+    void insertAt_indexZero_behavesLikeAddFirst() {
+        CustomLinkedList<Integer> list = new CustomLinkedList<>();
+        list.addLast(2);
+        list.insertAt(0, 1);
+        assertEquals("[1 -> 2]", list.toString());
+    }
+
+    @Test
+    void insertAt_indexEqualsSize_behavesLikeAddLast() {
+        CustomLinkedList<Integer> list = new CustomLinkedList<>();
+        list.addLast(1);
+        list.insertAt(1, 2);
+        assertEquals("[1 -> 2]", list.toString());
+    }
+
+    @Test
+    void insertAt_middleIndex_insertsBetweenElements() {
+        CustomLinkedList<Integer> list = new CustomLinkedList<>();
+        list.addLast(1);
+        list.addLast(3);
+        list.insertAt(1, 2);
+        assertEquals("[1 -> 2 -> 3]", list.toString());
+        assertEquals(3, list.size());
+    }
+
+    @Test
+    void insertAt_negativeIndex_throws() {
+        CustomLinkedList<Integer> list = new CustomLinkedList<>();
+        assertThrows(IndexOutOfBoundsException.class, () -> list.insertAt(-1, 1));
+    }
+
+    @Test
+    void insertAt_indexGreaterThanSize_throws() {
+        CustomLinkedList<Integer> list = new CustomLinkedList<>();
+        list.addLast(1);
+        assertThrows(IndexOutOfBoundsException.class, () -> list.insertAt(5, 2));
+    }
 }
