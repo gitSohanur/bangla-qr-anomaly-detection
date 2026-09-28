@@ -1,24 +1,69 @@
+import algorithm.CycleDetector;
+import algorithm.InsertionSorter;
+import data.SyntheticDataGenerator;
+import datastructure.CustomLinkedList;
+import datastructure.CustomQueue;
+import detection.AnomalyRecord;
+import detection.MerchantAnalyzer;
+import graph.Graph;
 import model.Transaction;
+import report.ReportGenerator;
 
-import java.time.LocalDateTime;
-
+/**
+ * Pipeline: Load -> Queue -> Process -> Graph -> DFS Cycle Detection
+ *           -> Anomaly Scoring -> Insertion Sort -> Report
+ */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Bangla-QR Anomaly Detection - Phase 1 demo");
+        ReportGenerator report = new ReportGenerator();
+        report.printBanner();
 
-        Transaction t1 = new Transaction("T001", "U001", "M001", 500, LocalDateTime.of(2026, 9, 1, 10, 15));
-        Transaction t2 = new Transaction("T002", "U002", "M001", 800, LocalDateTime.of(2026, 9, 1, 10, 17));
-        Transaction t3 = new Transaction("T003", "M001", "A001", 1200, LocalDateTime.of(2026, 9, 1, 10, 30));
+        System.out.println("STEP 1: Loading synthetic transactions (mixed scenario)...");
+        CustomLinkedList<Transaction> transactions = SyntheticDataGenerator.mixed();
+        System.out.println("Loaded " + transactions.size() + " transactions.\n");
 
-        System.out.println(t1);
-        System.out.println(t2);
-        System.out.println(t3);
-        System.out.println("Source type of T003: " + t3.getSourceType());
-
-        try {
-            new Transaction("T004", "U001", "U001", 100, LocalDateTime.of(2026, 9, 1, 11, 0));
-        } catch (IllegalArgumentException e) {
-            System.out.println("Rejected: " + e.getMessage());
+        System.out.println("STEP 2: Enqueuing transactions into the processing queue...");
+        CustomQueue<Transaction> queue = new CustomQueue<>();
+        for (Transaction t : transactions) {
+            queue.enqueue(t);
         }
+        System.out.println("Queue size: " + queue.size() + "\n");
+
+        System.out.println("STEP 3: Processing queue -> building transaction graph...");
+        Graph graph = new Graph();
+        int processed = 0;
+        int duplicatesSkipped = 0;
+        while (!queue.isEmpty()) {
+            Transaction t = queue.dequeue();
+            boolean added = graph.addEdge(t.getTransactionId(), t.getSourceId(),
+                    t.getDestinationId(), t.getAmount());
+            if (added) {
+                processed++;
+            } else {
+                duplicatesSkipped++;
+            }
+        }
+        System.out.println("Processed: " + processed + " transactions, "
+                + duplicatesSkipped + " duplicates skipped.");
+        System.out.println("Graph built: " + graph.vertexCount() + " vertices.\n");
+
+        System.out.println("STEP 4: Running DFS-based cycle detection...");
+        CycleDetector cycleDetector = new CycleDetector(graph);
+        boolean cycleFound = cycleDetector.hasCycle();
+        report.printCycleResult(cycleFound, cycleDetector);
+
+        System.out.println("STEP 5: Analyzing merchant transaction patterns...");
+        MerchantAnalyzer analyzer = new MerchantAnalyzer();
+        CustomLinkedList<AnomalyRecord> records = analyzer.analyze(graph);
+        System.out.println("Analyzed " + records.size() + " merchants.\n");
+
+        System.out.println("STEP 6: Ranking merchants by anomaly score (Insertion Sort)...");
+        InsertionSorter sorter = new InsertionSorter();
+        CustomLinkedList<AnomalyRecord> ranked = sorter.sortByScoreDescending(records);
+        System.out.println("Ranking complete.\n");
+
+        report.printMerchantAnalysis(ranked);
+        report.printRankedResults(ranked);
+        report.printDisclaimer();
     }
 }
