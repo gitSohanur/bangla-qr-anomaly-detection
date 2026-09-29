@@ -1,0 +1,42 @@
+.title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #620404;
+}
+
+.subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #ac1f1f;
+}
+
+.card {
+    -fx-background-color: #b30000; /* deep red background */
+    -fx-background-radius: 6;
+    -fx-border-color: #800000; /* darker red border */
+    -fx-border-radius: 6;
+}
+
+.card-value {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.card-caption {
+    -fx-font-size: 11px;
+    -fx-text-fill: white;
+}
+
+.status-bar {
+    -fx-background-color: #990000; /* muted red for status bar */
+    -fx-font-size: 11px;
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-background-color: #b63838;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+}
