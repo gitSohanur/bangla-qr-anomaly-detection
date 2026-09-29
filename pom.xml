@@ -13,6 +13,7 @@
     <properties>
         <maven.compiler.release>25</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javafx.version>21.0.4</javafx.version>
     </properties>
 
     <!-- Dependencies -->
@@ -24,6 +25,14 @@
             <artifactId>junit-jupiter</artifactId>
             <version>5.13.1</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- JavaFX - Windows classifier; change to "mac" or "linux" on another OS -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>win</classifier>
         </dependency>
 
     </dependencies>
@@ -48,6 +57,16 @@
                 <version>3.5.3</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
+                </configuration>
+            </plugin>
+
+            <!-- Runs gui.Launcher via: mvn exec:java -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <mainClass>gui.Launcher</mainClass>
                 </configuration>
             </plugin>
 
