@@ -166,9 +166,7 @@ public class DashboardController {
     }
 
     private void onShowGraph() {
-        contentArea.getChildren().setAll(new Label(
-                "Graph visualization arrives in Phase 9D.\n(" + graph.vertexCount()
-                        + " vertices already built by Graph -- see Phase 4.)"));
+        contentArea.getChildren().setAll(GraphView.build(graph));
     }
 
     private void onShowSuspiciousMerchants() {
@@ -218,4 +216,5 @@ public class DashboardController {
         VBox getNode() { return node; }
         void setValue(String value) { valueLabel.setText(value); }
     }
+
 }
