@@ -9,7 +9,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -173,10 +172,7 @@ public class DashboardController {
     }
 
     private void onShowSuspiciousMerchants() {
-        TextArea area = new TextArea(DashboardStats.formatRankedList(rankedRecords));
-        area.setEditable(false);
-        area.setStyle("-fx-font-family: 'Consolas', monospace;");
-        contentArea.getChildren().setAll(area);
+        contentArea.getChildren().setAll(MerchantTableView.build(rankedRecords));
     }
 
     private void resetState() {
