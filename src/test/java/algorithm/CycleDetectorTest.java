@@ -119,4 +119,19 @@ class CycleDetectorTest {
         g.addEdge("T003", "M007", "M001", 1000); // now closes the cycle
         assertTrue(d.hasCycle());
     }
+    @Test
+    void formatPath_nullPath_returnsEmptyString() {
+        assertEquals("", CycleDetector.formatPath(null));
+    }
+
+    @Test
+    void formatPath_simpleCycle_returnsArrowJoinedIds() {
+        Graph g = new Graph();
+        g.addEdge("T001", "M001", "A001", 1000);
+        g.addEdge("T002", "A001", "M007", 1000);
+        g.addEdge("T003", "M007", "M001", 1000);
+        CycleDetector detector = new CycleDetector(g);
+        detector.hasCycle();
+        assertEquals("M001 -> A001 -> M007 -> M001", CycleDetector.formatPath(detector.getCyclePath()));
+    }
 }

@@ -12,7 +12,7 @@ public class ReportGenerator {
 
     public void printBanner() {
         System.out.println(DOUBLE_DIVIDER);
-        System.out.println("BANGLA QR ANOMALY DETECTION");
+        System.out.println("BANGLA-QR ANOMALY DETECTION");
         System.out.println(DOUBLE_DIVIDER);
         System.out.println();
     }
@@ -20,23 +20,12 @@ public class ReportGenerator {
     public void printCycleResult(boolean cycleFound, CycleDetector detector) {
         if (cycleFound) {
             System.out.println("Cycle detected:");
-            System.out.println("  " + formatCyclePath(detector.getCyclePath()));
+            System.out.println("  " + CycleDetector.formatPath(detector.getCyclePath()));
             System.out.println("Cycle length: " + detector.getCycleLength());
         } else {
             System.out.println("No cycle detected.");
         }
         System.out.println();
-    }
-
-    private String formatCyclePath(CustomLinkedList<Vertex> path) {
-        StringBuilder sb = new StringBuilder();
-        boolean first = true;
-        for (Vertex v : path) {
-            if (!first) sb.append(" -> ");
-            sb.append(v.getId());
-            first = false;
-        }
-        return sb.toString();
     }
 
     public void printMerchantAnalysis(CustomLinkedList<AnomalyRecord> records) {

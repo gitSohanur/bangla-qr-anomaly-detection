@@ -17,6 +17,8 @@ import javafx.scene.layout.VBox;
 import model.Transaction;
 import pipeline.AnalysisPipeline;
 import pipeline.GraphBuildResult;
+import graph.Vertex;
+
 
 /**
  * Builds and wires the dashboard. Contains no DSA logic -- every figure
@@ -166,7 +168,8 @@ public class DashboardController {
     }
 
     private void onShowGraph() {
-        contentArea.getChildren().setAll(GraphView.build(graph));
+        CustomLinkedList<Vertex> cyclePath = cycleDetector != null ? cycleDetector.getCyclePath() : null;
+        contentArea.getChildren().setAll(GraphView.build(graph, cyclePath));
     }
 
     private void onShowSuspiciousMerchants() {

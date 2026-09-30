@@ -77,4 +77,23 @@ public class CycleDetector {
     public int getCycleLength() {
         return cyclePath == null ? 0 : cyclePath.size() - 1;
     }
+
+    /**
+     * Formats a cycle path as "A -> B -> C -> A". Returns an empty
+     * string if path is null. Shared by the CLI report and the GUI so
+     * neither duplicates this formatting.
+     */
+    public static String formatPath(CustomLinkedList<Vertex> path) {
+        if (path == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        for (Vertex v : path) {
+            if (!first) sb.append(" -> ");
+            sb.append(v.getId());
+            first = false;
+        }
+        return sb.toString();
+    }
 }
